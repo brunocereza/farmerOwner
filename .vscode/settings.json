@@ -1,0 +1,10 @@
+{
+  "typescript.tsdk": "./native/node_modules/typescript/lib",
+  "eslint.enable": true,
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.validate": ["typescript"],
+  "eslint.packageManager": "yarn",
+  "eslint.workingDirectories": ["native/"]
+}

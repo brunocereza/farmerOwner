@@ -1,0 +1,7 @@
+CREATE TABLE OWNER (
+  id uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  city VARCHAR(255) NOT NULL,
+  identity_document VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  state VARCHAR(255) NOT NULL
+)
