@@ -1,10 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 @Entity('owner')
 export class Owner {
   @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+  id: string;
 
   @Column()
   city: string;

@@ -1,8 +1,8 @@
 import Joi from 'joi';
 
-export const owner = Joi.object().keys({
+export const ownerBody = Joi.object().keys({
   name: Joi.string().required(),
-  identityDocument: Joi.string().required(),
+  identity_document: Joi.string().required(),
   city: Joi.string().required(),
   state: Joi.string().required(),
 });

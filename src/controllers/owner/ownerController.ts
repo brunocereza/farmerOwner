@@ -1,8 +1,10 @@
+import { NotFoundError } from '../../core/errors/error';
 import { Owner } from '../../entities/owner';
-import { CreateOwner } from '../../interface/owner/ownerInterface';
-import { ownerRepository } from '../../repositories/owner/ownerRepository';
+import { IOwner } from '../../interface/owner/owner-interface';
+import { ownerRepository } from '../../repositories/owner/owner-repository';
 import { IOwnerRepository } from '../../repositories/owner/type';
 import { IOwnerController } from './type';
+
 class OwnerController implements IOwnerController {
   private ownerRepository: IOwnerRepository;
   constructor(ownerRepository: IOwnerRepository) {
@@ -11,20 +13,20 @@ class OwnerController implements IOwnerController {
 
   async create({
     city,
-    identityDocument,
+    identity_document,
     name,
     state,
-  }: CreateOwner): Promise<boolean> {
-    const ownerToCreate: CreateOwner = {
+  }: IOwner): Promise<Owner> {
+    const ownerToCreate: IOwner = {
       city,
-      identityDocument,
+      identity_document,
       name,
       state,
     };
 
     const ownerAreCreated = await this.ownerRepository.create(ownerToCreate);
 
-    return true;
+    return ownerAreCreated;
   }
 
   async getAll(): Promise<Owner[]> {
@@ -32,5 +34,38 @@ class OwnerController implements IOwnerController {
 
     return owners;
   }
+
+  async updatePartial(
+    id: string,
+    ownerChanges: Partial<IOwner>,
+  ): Promise<void> {
+    const owner = await this.ownerRepository.findById(id);
+
+    if (!owner) {
+      throw new NotFoundError('Owner Not Found');
+    }
+    const ownerToUpdate = this.updateUserDetails(owner, ownerChanges);
+
+    await this.ownerRepository.updatePartial(id, ownerToUpdate);
+
+    return;
+  }
+
+  async updateFull(id: string, ownerChanges: IOwner): Promise<void> {
+    const owner = await this.ownerRepository.findById(id);
+
+    if (!owner) {
+      throw new NotFoundError('Owner Not Found');
+    }
+
+    await this.ownerRepository.updatePartial(id, ownerChanges);
+
+    return;
+  }
+
+  private updateUserDetails(user: Owner, ownerChanges: Partial<Owner>): Owner {
+    return { ...user, ...ownerChanges };
+  }
 }
+
 export const ownerController = new OwnerController(ownerRepository);

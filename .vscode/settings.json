@@ -1,7 +1,9 @@
 {
   "typescript.tsdk": "./native/node_modules/typescript/lib",
   "eslint.enable": true,
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
   "eslint.alwaysShowStatus": true,
   "eslint.validate": ["typescript"],

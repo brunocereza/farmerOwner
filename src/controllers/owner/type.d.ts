@@ -1,12 +1,9 @@
 import { Owner } from '../../entities/owner';
-import { CreateOwner } from '../../interface/owner/ownerInterface';
+import { IOwner } from '../../interface/owner/owner-interface';
 
 export interface IOwnerController {
-  create({
-    city,
-    identityDocument,
-    name,
-    state,
-  }: CreateOwner): Promise<boolean>;
+  create({ city, identity_document, name, state }: IOwner): Promise<Owner>;
   getAll(): Promise<Owner[]>;
+  updatePartial(id: string, changes: Partial<IOwner>): Promise<void>;
+  updateFull(id: string, ownerChanges: IOwner): Promise<void>;
 }

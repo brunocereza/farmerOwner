@@ -1,7 +1,10 @@
 import { Owner } from '../../entities/owner';
-import { CreateOwner } from '../../interface/owner/ownerInterface';
+import { IOwner } from '../../interface/owner/owner-interface';
 
 export interface IOwnerRepository {
-  create({ city, identityDocument, name, state }: CreateOwner): Promise<Owner>;
+  create({ city, identity_document, name, state }: IOwner): Promise<Owner>;
   findAllCategories(): Promise<Owner[]>;
+  findById(id: string): Promise<Owner>;
+  updatePartial(id: string, ownerChanges: Partial<IOwner>): Promise<void>;
+  updateFull(id: string, ownerChanges: IOwner): Promise<void>;
 }
