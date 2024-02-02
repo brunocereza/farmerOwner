@@ -14,7 +14,7 @@ export const configureConnection = (): DataSource => {
     database: DATABASE,
     schema: 'public',
     entities: ['src/entities/**/*.ts'],
-    synchronize: false, //IMPORTANTÍSSIMO DEIXAR FALSE - se deixar on ele irá criar as tabelas com o nome de cada @Entity('EXEMPLO')
+    synchronize: true, // se deixar on ele irá criar as tabelas com o nome de cada @Entity('EXEMPLO')
   };
   const dbaConnection = new DataSource(dataSourceSettings);
 

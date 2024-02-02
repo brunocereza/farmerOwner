@@ -1,5 +1,5 @@
 import { connectionManagement } from '../../database/connection/connection-management';
-import { Owner } from '../../entities/owner';
+import { Owner } from '../../entities/owner/owner-entity';
 import { IOwnerRepository } from './type';
 import { IConnectionManagement } from '../../database/connection/type';
 import { IOwner } from '../../interface/owner/owner-interface';
@@ -36,7 +36,7 @@ class OwnerRepository implements IOwnerRepository {
     }
   }
 
-  public async findAllCategories(): Promise<Owner[]> {
+  public async getAll(): Promise<Owner[]> {
     const connection = await this.connectionManagement.connect();
 
     try {

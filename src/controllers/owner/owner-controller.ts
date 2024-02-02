@@ -1,5 +1,5 @@
 import { NotFoundError } from '../../core/errors/error';
-import { Owner } from '../../entities/owner';
+import { Owner } from '../../entities/owner/owner-entity';
 import { IOwner } from '../../interface/owner/owner-interface';
 import { ownerRepository } from '../../repositories/owner/owner-repository';
 import { IOwnerRepository } from '../../repositories/owner/type';
@@ -30,7 +30,7 @@ class OwnerController implements IOwnerController {
   }
 
   async getAll(): Promise<Owner[]> {
-    const owners = await this.ownerRepository.findAllCategories();
+    const owners = await this.ownerRepository.getAll();
 
     return owners;
   }
@@ -44,7 +44,7 @@ class OwnerController implements IOwnerController {
     if (!owner) {
       throw new NotFoundError('Owner Not Found');
     }
-    const ownerToUpdate = this.updateUserDetails(owner, ownerChanges);
+    const ownerToUpdate = this.updateOwnerDetails(owner, ownerChanges);
 
     await this.ownerRepository.updatePartial(id, ownerToUpdate);
 
@@ -62,9 +62,20 @@ class OwnerController implements IOwnerController {
 
     return;
   }
+  async getById(id: string): Promise<Owner> {
+    const owner = await this.ownerRepository.findById(id);
 
-  private updateUserDetails(user: Owner, ownerChanges: Partial<Owner>): Owner {
-    return { ...user, ...ownerChanges };
+    if (!owner) {
+      throw new NotFoundError('Owner Not Found');
+    }
+    return owner;
+  }
+
+  private updateOwnerDetails(
+    owner: Owner,
+    ownerChanges: Partial<Owner>,
+  ): Owner {
+    return { ...owner, ...ownerChanges };
   }
 }
 

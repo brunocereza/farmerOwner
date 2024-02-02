@@ -1,11 +1,12 @@
-CREATE TABLE farmer (
+CREATE TABLE farm (
   id uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-  owner_id UUID NOT NULL,
+  ownerId UUID NOT NULL,
   name VARCHAR(255) NOT NULL,
-  cidade VARCHAR(255) NOT NULL,
-  estado VARCHAR(255) NOT NULL,
+  city VARCHAR(255) NOT NULL,
+  state VARCHAR(255) NOT NULL,
   arable_area NUMERIC NOT NULL,
-  crops_types NUMERIC NOT NULL,
+  total_area NUMERIC NOT NULL,
+  crops_types VARCHAR(255) NOT NULL,
   vegetation_area NUMERIC NOT NULL,
-  CONSTRAINT fk_owner FOREIGN KEY(owner_id) REFERENCES owner(id)
+  CONSTRAINT fk_owner FOREIGN KEY(ownerId) REFERENCES owner(id)
 )

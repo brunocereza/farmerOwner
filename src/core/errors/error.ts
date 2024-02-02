@@ -1,5 +1,5 @@
 import { ErrorName } from '../enum/error';
-import { HttpStatusCodeEnum } from '../enum/httpsStatusCode';
+import { HttpStatusCodeEnum } from '../enum/https-status-code';
 
 export class ThrowError extends Error {
   name: ErrorName;
@@ -16,5 +16,16 @@ export class ThrowError extends Error {
 export class NotFoundError extends ThrowError {
   constructor(message) {
     super(ErrorName.NotFoundError, message, HttpStatusCodeEnum.notFound);
+  }
+}
+
+export class ErrorExtends extends ThrowError {
+  constructor(message, code) {
+    super(ErrorName.ValidationError, message, HttpStatusCodeEnum.notFound);
+
+    //Verificado o Código de erro do TYPEORM
+    if (code === '23503') {
+      this.message = 'Not found, please, verify the ID(s)informed!';
+    }
   }
 }
