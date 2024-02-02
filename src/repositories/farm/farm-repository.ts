@@ -1,4 +1,4 @@
-import { ErrorExtends } from '../../core/errors/error';
+import { ErrorTreatment } from '../../core/errors/error';
 import { connectionManagement } from '../../database/connection/connection-management';
 import { IConnectionManagement } from '../../database/connection/type';
 import { Farm } from '../../entities/farm/farm-entity';
@@ -81,8 +81,7 @@ class FarmRepository implements IFarmRepository {
       await connection.getRepository(Farm).update({ id: id }, farmChanges);
       return;
     } catch (error) {
-      console.log(error);
-      throw new ErrorExtends('Farm Not Found', error.code);
+      throw new ErrorTreatment(error);
     } finally {
       await this.connectionManagement.disconnect(connection);
     }
@@ -94,42 +93,35 @@ class FarmRepository implements IFarmRepository {
       await connection.getRepository(Farm).update({ id: id }, farmChanges);
       return;
     } catch (error) {
-      throw new ErrorExtends('Farm Not Found', error.code);
+      throw new ErrorTreatment(error);
     } finally {
+      await this.connectionManagement.disconnect(connection);
+    }
+  }
+
+  public async getByOwnerId(id: string): Promise<Farm[]> {
+    const connection = await this.connectionManagement.connect();
+    try {
+      const form = await connection.getRepository(Farm).find({
+        // select: ['owner'],
+        where: {
+          ownerId: id,
+        },
+        relations: {
+          owner: true,
+        },
+        // loadRelationIds: true,
+      });
+
+      return form;
+    } catch (error) {
+      //ajustar tratamento de erro
+      console.log(error);
+    } finally {
+      //Sempre após terminar o fluxo, encerra a conexão com o banco de dados
       await this.connectionManagement.disconnect(connection);
     }
   }
 }
 
 export const farmRepository = new FarmRepository(connectionManagement);
-
-//   public async find({
-//     FarmId,
-//     name,
-//     city,
-//     state,
-//     arable_area,
-//     crops_types,
-//     vegetation_area,
-//   }: IFarm): Promise<void> {
-//     const connection = await this.connectionManagement.connect();
-//     //QUERY achar fazendas por dono
-//     // try {
-//     //   const farmSaved = await connection.getRepository(Owner).find({
-//     //     // select: ['owner'],
-//     //     where: {
-//     //       id: ownerId,
-//     //     },
-//     //     relations: {
-//     //       farms: true,
-//     //     },
-//     //     // loadRelationIds: true,
-//     //   });
-
-//       return;
-//     } catch (error) {
-//       console.log(error);
-//     } finally {
-//       //Sempre após terminar o fluxo, encerra a conexão com o banco de dados
-//       await this.connectionManagement.disconnect(connection);
-//     }

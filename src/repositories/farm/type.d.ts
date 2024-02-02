@@ -17,4 +17,5 @@ export interface IFarmRepository {
   findById(id: string): Promise<Farm>;
   updatePartial(id: string, ownerChanges: Partial<IFarm>): Promise<void>;
   updateFull(id: string, ownerChanges: IFarm): Promise<void>;
+  getByOwnerId(id: string): Promise<Farm[]>;
 }

@@ -79,6 +79,15 @@ class FarmController implements IFarmController {
     return farm;
   }
 
+  async getByOwnerId(id: string): Promise<Farm[]> {
+    const farm = await this.farmRepository.getByOwnerId(id);
+
+    if (!farm) {
+      throw new NotFoundError('farm Not Found');
+    }
+    return farm;
+  }
+
   private updateFarmDetails(
     Farm: Farm,
     FarmChanges: Partial<Farm>,

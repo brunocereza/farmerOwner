@@ -1,21 +1,24 @@
 import { Segments, celebrate } from 'celebrate';
 import { Router } from 'express';
-import { farmCreateBody } from '../../../schema/farm/farm-create';
-import { IFarm } from '../../../interface/farm/farm-interface';
 import { farmController } from '../../../controllers/farm/farm-controller';
-import express = require('express');
+import { IFarm } from '../../../interface/farm/farm-interface';
+import { farmCreateBody } from '../../../schema/farm/farm-create';
 import { getOneFarmParams } from '../../../schema/farm/farm-get-one';
-import {
-  updatePartialFarmBody,
-  updatePartialFarmParams,
-} from '../../../schema/farm/farm-update-partial';
+
 import {
   updateFullFarmBody,
   updateFullFarmParams,
 } from '../../../schema/farm/farm-update-full';
+import {
+  updatePartialFarmBody,
+  updatePartialFarmParams,
+} from '../../../schema/farm/farm-update-partial';
+import { getByOwnerFarmParams } from '../../../schema/farm/get-by-owner-farm';
+
+import express = require('express');
+
 const farmRouth = Router();
 
-//o esquema utilizado esta somente como exemplo, será ajustado e retirado
 farmRouth.post(
   '/create',
   celebrate({ [Segments.BODY]: farmCreateBody }),
@@ -42,8 +45,7 @@ farmRouth.post(
 
 farmRouth.get(
   '/getAll',
-
-  async (req, res) => {
+  async (req: express.Request, res: express.Response) => {
     try {
       const farms = await farmController.getAll();
 
@@ -61,11 +63,12 @@ farmRouth.get(
   },
 );
 
+//ATT Partial
 farmRouth.patch(
   '/:id',
   celebrate({ [Segments.BODY]: updatePartialFarmBody }),
   celebrate({ [Segments.PARAMS]: updatePartialFarmParams }),
-  async (req, res) => {
+  async (req: express.Request, res: express.Response) => {
     try {
       const { id } = req.params;
       const farmChanges: Partial<IFarm> = req.body;
@@ -83,11 +86,12 @@ farmRouth.patch(
   },
 );
 
+//ATT FULL
 farmRouth.put(
   '/:id',
   celebrate({ [Segments.BODY]: updateFullFarmBody }),
   celebrate({ [Segments.PARAMS]: updateFullFarmParams }),
-  async (req, res) => {
+  async (req: express.Request, res: express.Response) => {
     try {
       const { id } = req.params;
       const farmChanges: IFarm = req.body;
@@ -108,11 +112,31 @@ farmRouth.put(
 farmRouth.get(
   '/get/:id',
   celebrate({ [Segments.PARAMS]: getOneFarmParams }),
-  async (req, res) => {
+  async (req: express.Request, res: express.Response) => {
     try {
       const { id } = req.params;
 
       const farm = await farmController.getById(id);
+
+      return res.status(200).json({ Message: 'farm Search successful!', farm });
+    } catch (error) {
+      res.status(error.status).send({
+        message: error.message,
+        name: error.name,
+        status: error.status,
+      });
+    }
+  },
+);
+
+farmRouth.get(
+  '/getByOwner/:id',
+  celebrate({ [Segments.PARAMS]: getByOwnerFarmParams }),
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const { id } = req.params;
+
+      const farm = await farmController.getByOwnerId(id);
 
       return res.status(200).json({ Message: 'farm Search successful!', farm });
     } catch (error) {

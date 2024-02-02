@@ -19,13 +19,26 @@ export class NotFoundError extends ThrowError {
   }
 }
 
-export class ErrorExtends extends ThrowError {
-  constructor(message, code) {
-    super(ErrorName.ValidationError, message, HttpStatusCodeEnum.notFound);
+export class ErrorTreatment extends ThrowError {
+  constructor(error) {
+    super(
+      ErrorName.ValidationError,
+      error.message,
+      HttpStatusCodeEnum.notFound,
+    );
 
     //Verificado o Código de erro do TYPEORM
-    if (code === '23503') {
-      this.message = 'Not found, please, verify the ID(s)informed!';
+    switch (error.code) {
+      case '23503':
+        this.message = 'Not found, please, verify the ID(s)informed!';
+        break;
+      case '23505':
+        this.message = 'information already registered!';
+        break;
+      default:
+        this.message = error.message;
+        break;
     }
   }
 }
+//ErrorTreatment

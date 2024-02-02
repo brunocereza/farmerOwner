@@ -1,24 +1,24 @@
 import { Segments, celebrate } from 'celebrate';
-import { Router, response } from 'express';
+import { Router } from 'express';
+import { ownerController } from '../../../controllers/owner/owner-controller';
 import { IOwner } from '../../../interface/owner/owner-interface';
 import { ownerCreateBody } from '../../../schema/owner/owner-create';
-import { ownerController } from '../../../controllers/owner/owner-controller';
-import {
-  updatePartialOwnerBody,
-  updatePartialOwnerParams,
-} from '../../../schema/owner/owner-update-partial';
+import { getOneOwnerParams } from '../../../schema/owner/owner-get-one';
 import {
   updateFullOwnerBody,
   updateFullOwnerParams,
 } from '../../../schema/owner/owner-update-full';
-import { getOneOwnerParams } from '../../../schema/owner/owner-get-one';
+import {
+  updatePartialOwnerBody,
+  updatePartialOwnerParams,
+} from '../../../schema/owner/owner-update-partial';
 import express = require('express');
-import { farmController } from '../../../controllers/farm/farm-controller';
+import { verifyDocumentMiddleware } from '../../../middleware/document-middleware';
 const ownerRouth = Router();
 
-//o esquema utilizado esta somente como exemplo, será ajustado e retirado
 ownerRouth.post(
   '/create',
+  verifyDocumentMiddleware,
   celebrate({ [Segments.BODY]: ownerCreateBody }),
   async (req: express.Request, res: express.Response) => {
     try {
@@ -35,7 +35,11 @@ ownerRouth.post(
       }
       return res.status(502).json({ message: 'Error processing the request' });
     } catch (error) {
-      throw error;
+      return res.status(error.status).send({
+        message: error.message,
+        name: error.name,
+        status: error.status,
+      });
     }
   },
 );
@@ -51,13 +55,19 @@ ownerRouth.get(
       }
     } catch (error) {
       // ajustar retorno
-      return res.status(502).json({ message: 'Error processing the request' });
+      return res.status(error.status).send({
+        message: error.message,
+        name: error.name,
+        status: error.status,
+      });
     }
   },
 );
 
+//ATT Partial
 ownerRouth.patch(
   '/:id',
+  verifyDocumentMiddleware,
   celebrate({ [Segments.BODY]: updatePartialOwnerBody }),
   celebrate({ [Segments.PARAMS]: updatePartialOwnerParams }),
   async (req: express.Request, res: express.Response) => {
@@ -78,8 +88,10 @@ ownerRouth.patch(
   },
 );
 
+//ATT FULL
 ownerRouth.put(
   '/:id',
+  verifyDocumentMiddleware,
   celebrate({ [Segments.BODY]: updateFullOwnerBody }),
   celebrate({ [Segments.PARAMS]: updateFullOwnerParams }),
   async (req: express.Request, res: express.Response) => {

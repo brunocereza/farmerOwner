@@ -3,6 +3,7 @@ import { Owner } from '../../entities/owner/owner-entity';
 import { IOwnerRepository } from './type';
 import { IConnectionManagement } from '../../database/connection/type';
 import { IOwner } from '../../interface/owner/owner-interface';
+import { ErrorTreatment } from '../../core/errors/error';
 
 class OwnerRepository implements IOwnerRepository {
   private connectionManagement: IConnectionManagement;
@@ -29,7 +30,7 @@ class OwnerRepository implements IOwnerRepository {
       const owners = await connection.getRepository(Owner).save(owner);
       if (owners) return owners;
     } catch (error) {
-      console.log(error);
+      throw new ErrorTreatment(error);
     } finally {
       //Sempre após terminar o fluxo, encerra a conexão com o banco de dados
       await this.connectionManagement.disconnect(connection);

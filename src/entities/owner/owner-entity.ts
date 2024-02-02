@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  Unique,
+} from 'typeorm';
 import { Farm } from '../farm/farm-entity';
 
 @Entity('owner')
@@ -9,7 +15,7 @@ export class Owner {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   identity_document: string;
 
   @Column()
