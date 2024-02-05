@@ -14,6 +14,7 @@ import {
 } from '../../../schema/owner/owner-update-partial';
 import express = require('express');
 import { verifyDocumentMiddleware } from '../../../middleware/document-middleware';
+import { deleteOwnerParams } from '../../../schema/owner/owner-delete';
 const ownerRouth = Router();
 
 ownerRouth.post(
@@ -121,6 +122,28 @@ ownerRouth.get(
       return res
         .status(200)
         .json({ Message: 'Owner Search successful!', owner });
+    } catch (error) {
+      res.status(error.status).send({
+        message: error.message,
+        name: error.name,
+        status: error.status,
+      });
+    }
+  },
+);
+
+ownerRouth.delete(
+  '/delete/:id',
+  celebrate({ [Segments.PARAMS]: deleteOwnerParams }),
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const { id } = req.params;
+
+      await ownerController.delete(id);
+
+      return res.status(200).json({
+        Message: `farm was been deleted!`,
+      });
     } catch (error) {
       res.status(error.status).send({
         message: error.message,

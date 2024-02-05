@@ -16,6 +16,7 @@ import {
 import { getByOwnerFarmParams } from '../../../schema/farm/get-by-owner-farm';
 
 import express = require('express');
+import { deleteFarmParams } from '../../../schema/farm/farm-delete';
 
 const farmRouth = Router();
 
@@ -143,6 +144,28 @@ farmRouth.get(
         Message: `farm Search successful`,
         numberOfFarms: farms.length,
         farms,
+      });
+    } catch (error) {
+      res.status(error.status).send({
+        message: error.message,
+        name: error.name,
+        status: error.status,
+      });
+    }
+  },
+);
+
+farmRouth.delete(
+  '/delete/:id',
+  celebrate({ [Segments.PARAMS]: deleteFarmParams }),
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const { id } = req.params;
+
+      await farmController.delete(id);
+
+      return res.status(200).json({
+        Message: `farm was been deleted!`,
       });
     } catch (error) {
       res.status(error.status).send({

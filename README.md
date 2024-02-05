@@ -17,3 +17,19 @@ API for registering farms and rural producers
 - ![Static Badge](https://img.shields.io/badge/joi-grey)
 - ![Static Badge](https://img.shields.io/badge/yarn-grey)
 - ![Static Badge](https://img.shields.io/badge/npm-grey)
+
+### Features
+
+#### Owner
+
+- [x] create
+- [x] read
+- [x] update
+- [x] delete
+
+#### Farm
+
+- [x] create
+- [x] read
+- [x] update
+- [x] delete

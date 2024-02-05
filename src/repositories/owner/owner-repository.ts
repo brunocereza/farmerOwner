@@ -92,6 +92,20 @@ class OwnerRepository implements IOwnerRepository {
       await this.connectionManagement.disconnect(connection);
     }
   }
+
+  public async delete(id: string): Promise<boolean> {
+    const connection = await this.connectionManagement.connect();
+
+    try {
+      const { affected } = await connection.getRepository(Owner).delete(id);
+
+      return !!affected;
+    } catch (error) {
+      throw new ErrorTreatment(error);
+    } finally {
+      await this.connectionManagement.disconnect(connection);
+    }
+  }
 }
 
 export const ownerRepository = new OwnerRepository(connectionManagement);

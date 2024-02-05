@@ -30,6 +30,9 @@ export class Farm {
   @Column('uuid')
   ownerId: string;
 
-  @ManyToOne(() => Owner, (Owner) => Owner.farms)
+  @ManyToOne(() => Owner, (Owner) => Owner.farms, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   owner: Owner;
 }

@@ -1,4 +1,4 @@
-import { ErrorTreatment } from '../../core/errors/error';
+import { ErrorTreatment, NotFoundError } from '../../core/errors/error';
 import { connectionManagement } from '../../database/connection/connection-management';
 import { IConnectionManagement } from '../../database/connection/type';
 import { Farm } from '../../entities/farm/farm-entity';
@@ -110,6 +110,20 @@ class FarmRepository implements IFarmRepository {
       });
 
       return form;
+    } catch (error) {
+      throw new ErrorTreatment(error);
+    } finally {
+      await this.connectionManagement.disconnect(connection);
+    }
+  }
+
+  public async delete(id: string): Promise<boolean> {
+    const connection = await this.connectionManagement.connect();
+
+    try {
+      const { affected } = await connection.getRepository(Farm).delete(id);
+
+      return !!affected;
     } catch (error) {
       throw new ErrorTreatment(error);
     } finally {

@@ -88,6 +88,15 @@ class FarmController implements IFarmController {
     return farm;
   }
 
+  async delete(id: string): Promise<void> {
+    const farmDeleted = await this.farmRepository.delete(id);
+
+    if (!farmDeleted) {
+      throw new NotFoundError('Farm Not Found!');
+    }
+    return;
+  }
+
   private updateFarmDetails(
     Farm: Farm,
     FarmChanges: Partial<Farm>,

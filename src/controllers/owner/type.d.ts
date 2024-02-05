@@ -7,4 +7,5 @@ export interface IOwnerController {
   getById(id: string): Promise<Owner>;
   updatePartial(id: string, changes: Partial<IOwner>): Promise<void>;
   updateFull(id: string, ownerChanges: IOwner): Promise<void>;
+  delete(id: string): Promise<void>;
 }

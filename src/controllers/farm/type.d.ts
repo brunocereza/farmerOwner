@@ -17,4 +17,5 @@ export interface IFarmController {
   updatePartial(id: string, changes: Partial<IFarm>): Promise<void>;
   updateFull(id: string, farmChanges: IFarm): Promise<void>;
   getByOwnerId(id: string): Promise<Farm[]>;
+  delete(id: string): Promise<void>;
 }

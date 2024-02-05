@@ -75,6 +75,15 @@ class OwnerController implements IOwnerController {
     return owner;
   }
 
+  async delete(id: string): Promise<void> {
+    const ownerDeleted = await this.ownerRepository.delete(id);
+
+    if (!ownerDeleted) {
+      throw new NotFoundError('Owner Not Found!');
+    }
+    return;
+  }
+
   private updateOwnerDetails(
     owner: Owner,
     ownerChanges: Partial<Owner>,
