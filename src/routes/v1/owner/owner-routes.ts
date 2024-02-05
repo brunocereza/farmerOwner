@@ -26,12 +26,9 @@ ownerRouth.post(
       const ownerCreated = await ownerController.create(params);
 
       if (ownerCreated) {
-        return (
-          res
-            .status(201)
-            //Ajustar para retornar alguns dados
-            .json({ Message: 'Ownert has been created!' })
-        );
+        return res
+          .status(201)
+          .json({ Message: 'Ownert has been created!', owner: ownerCreated });
       }
       return res.status(502).json({ message: 'Error processing the request' });
     } catch (error) {
@@ -50,11 +47,10 @@ ownerRouth.get(
     try {
       const owners = await ownerController.getAll();
 
-      if (owners) {
+      if (owners.length) {
         return res.status(200).json({ owners });
       }
     } catch (error) {
-      // ajustar retorno
       return res.status(error.status).send({
         message: error.message,
         name: error.name,
@@ -74,8 +70,8 @@ ownerRouth.patch(
     try {
       const { id } = req.params;
       const ownerChanges: Partial<IOwner> = req.body;
-
-      const update = await ownerController.updatePartial(id, ownerChanges);
+      //TODO: Check how to return the updated info
+      await ownerController.updatePartial(id, ownerChanges);
 
       return res.status(200).json({ Message: 'Owner updated successfully!' });
     } catch (error) {
@@ -99,6 +95,7 @@ ownerRouth.put(
       const { id } = req.params;
       const ownerChanges: IOwner = req.body;
 
+      //TODO: Check how to return the updated info
       await ownerController.updateFull(id, ownerChanges);
 
       return res.status(200).json({ Message: 'Owner updated successfully!' });

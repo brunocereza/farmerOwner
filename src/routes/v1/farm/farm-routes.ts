@@ -28,17 +28,15 @@ farmRouth.post(
 
       const farmCreated = await farmController.create(farmParams);
 
-      console.log(farmCreated, 'farm ');
-
-      return (
-        res
-          .status(201)
-          //Ajustar para retornar alguns dados
-          .json({ Message: 'farm has been created!' })
-      );
+      return res
+        .status(201)
+        .json({ Message: 'farm has been created!', farmCreated });
     } catch (error) {
-      // ajustar retorno
-      return res.status(502).json({ message: 'Error processing the request' });
+      res.status(error.status).send({
+        message: error.message,
+        name: error.name,
+        status: error.status,
+      });
     }
   },
 );
@@ -73,6 +71,7 @@ farmRouth.patch(
       const { id } = req.params;
       const farmChanges: Partial<IFarm> = req.body;
 
+      //TODO: Check how to return the updated info
       await farmController.updatePartial(id, farmChanges);
 
       return res.status(200).json({ Message: 'farm updated successfully!' });
@@ -96,7 +95,8 @@ farmRouth.put(
       const { id } = req.params;
       const farmChanges: IFarm = req.body;
 
-      const update = await farmController.updateFull(id, farmChanges);
+      //TODO: Check how to return the updated info
+      await farmController.updateFull(id, farmChanges);
 
       return res.status(200).json({ Message: 'farm updated successfully!' });
     } catch (error) {
@@ -136,9 +136,14 @@ farmRouth.get(
     try {
       const { id } = req.params;
 
-      const farm = await farmController.getByOwnerId(id);
+      const farms = await farmController.getByOwnerId(id);
 
-      return res.status(200).json({ Message: 'farm Search successful!', farm });
+      //TODO: Check the best way to remove duplicate keys
+      return res.status(200).json({
+        Message: `farm Search successful`,
+        numberOfFarms: farms.length,
+        farms,
+      });
     } catch (error) {
       res.status(error.status).send({
         message: error.message,

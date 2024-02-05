@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "c232b5e9-3e3d-4f5e-b8eb-91656b703f5a",
+		"name": "Farm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12414772"
+	},
+	"item": [
+		{
+			"name": "crate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"BRUNO FARMER\",\r\n    \"city\": \"SP\",\r\n    \"state\": \"SP\",\r\n    \"ownerId\": \"2b38586f-cb0e-411d-8b71-469daf9cf851\",\r\n    \"arable_area\": 25,\r\n    \"total_area\": 100,\r\n    \"crops_types\": [\"cafe\", \"soja\"],\r\n    \"vegetation_area\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/v1/farm/create",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"farm",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update Partial",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ownerId\": \"335ab456-353e-4f07-85b9-8c781805b21b\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/v1/farm/:id",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"farm",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "b211e811-252f-46ed-a85d-a1aea4aba153"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Full",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \r\n    \"name\": \"BRUNO FARMER\",\r\n    \"city\": \"ATT\",\r\n    \"state\": \"ATT\",\r\n    \"arable_area\": 2,\r\n    \"total_area\": 2,\r\n    \"crops_types\": [\"cafe\"],\r\n    \"vegetation_area\": 2,\r\n    \"ownerId\": \"bebb92d3-5ecc-4665-882e-60b9afdf46c8\"\r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/v1/farm/:id",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"farm",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "b211e811-252f-46ed-a85d-a1aea4aba153"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/v1/farm/getAll",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"farm",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get One By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/v1/farm/get/:id",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"farm",
+						"get",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1202b80d-6b56-4430-a429-79b79aa47c64"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get By Owner Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/v1/farm/getByOwner/:id",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"farm",
+						"getByOwner",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "2b38586f-cb0e-411d-8b71-469daf9cf851"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

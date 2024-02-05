@@ -32,6 +32,10 @@ class OwnerController implements IOwnerController {
   async getAll(): Promise<Owner[]> {
     const owners = await this.ownerRepository.getAll();
 
+    if (!owners.length) {
+      throw new NotFoundError('Owners Not Found!');
+    }
+
     return owners;
   }
 
@@ -42,7 +46,7 @@ class OwnerController implements IOwnerController {
     const owner = await this.ownerRepository.findById(id);
 
     if (!owner) {
-      throw new NotFoundError('Owner Not Found');
+      throw new NotFoundError('Owner Not Found!');
     }
     const ownerToUpdate = this.updateOwnerDetails(owner, ownerChanges);
 
@@ -66,7 +70,7 @@ class OwnerController implements IOwnerController {
     const owner = await this.ownerRepository.findById(id);
 
     if (!owner) {
-      throw new NotFoundError('Owner Not Found');
+      throw new NotFoundError('Owner Not Found!');
     }
     return owner;
   }
@@ -75,6 +79,11 @@ class OwnerController implements IOwnerController {
     owner: Owner,
     ownerChanges: Partial<Owner>,
   ): Owner {
+    if (ownerChanges.identity_document)
+      ownerChanges.identity_document = ownerChanges.identity_document.replace(
+        /[^\d]+/g,
+        '',
+      );
     return { ...owner, ...ownerChanges };
   }
 }

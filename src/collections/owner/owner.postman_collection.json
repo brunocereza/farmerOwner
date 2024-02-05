@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "af265f30-43f1-45bf-a3ab-f16799e54b06",
+		"name": "owner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12414772"
+	},
+	"item": [
+		{
+			"name": "crate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"BRUNO CNPJ PONTUADO\",\r\n    \"identity_document\": \"45048319000125\",\r\n    \"city\": \"XXE\",\r\n    \"state\": \"SC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/v1/owner/create",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"owner",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update Partial",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"city\": \"SANTOS\",\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/v1/owner/:id",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"owner",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "d1088776-22e2-433c-8f20-02cce4ebdf58"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Full",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \r\n    \"city\": \"VELHO\",\r\n    \"name\": \"NOVO\",\r\n    \"identity_document\": \"S12332\",\r\n    \"state\":\"NOVO\"\r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/v1/owner/:id",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"owner",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "ba3b9338-f328-4ff3-8d4b-788f127152c4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/v1/owner/getAll",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"owner",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get One By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/v1/owner/get/:id",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"v1",
+						"owner",
+						"get",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "d1088776-22e2-433c-8f20-02cce4ebdf58"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

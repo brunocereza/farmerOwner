@@ -41,7 +41,7 @@ class FarmController implements IFarmController {
     const farms = await this.farmRepository.getAll();
 
     if (!farms.length) {
-      throw new NotFoundError('Farm Not Found');
+      throw new NotFoundError('Farm Not Found!');
     }
     return farms;
   }
@@ -50,7 +50,7 @@ class FarmController implements IFarmController {
     const farm = await this.farmRepository.findById(id);
 
     if (!farm) {
-      throw new NotFoundError('Farm Not Found');
+      throw new NotFoundError('Farm Not Found!');
     }
     const farmToUpdate = this.updateFarmDetails(farm, farmChanges);
 
@@ -63,7 +63,7 @@ class FarmController implements IFarmController {
     const farm = await this.farmRepository.findById(id);
 
     if (!farm) {
-      throw new NotFoundError('farm Not Found');
+      throw new NotFoundError('Farm Not Found!');
     }
 
     await this.farmRepository.updateFull(id, farmChanges);
@@ -74,7 +74,7 @@ class FarmController implements IFarmController {
     const farm = await this.farmRepository.findById(id);
 
     if (!farm) {
-      throw new NotFoundError('farm Not Found');
+      throw new NotFoundError('Farm Not Found!');
     }
     return farm;
   }
@@ -82,8 +82,8 @@ class FarmController implements IFarmController {
   async getByOwnerId(id: string): Promise<Farm[]> {
     const farm = await this.farmRepository.getByOwnerId(id);
 
-    if (!farm) {
-      throw new NotFoundError('farm Not Found');
+    if (!farm.length) {
+      throw new NotFoundError('Farm Not Found!');
     }
     return farm;
   }

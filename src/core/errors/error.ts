@@ -41,4 +41,3 @@ export class ErrorTreatment extends ThrowError {
     }
   }
 }
-//ErrorTreatment

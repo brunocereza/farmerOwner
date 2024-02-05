@@ -21,7 +21,6 @@ class FarmRepository implements IFarmRepository {
     crops_types,
     vegetation_area,
   }: IFarm): Promise<Farm> {
-    //Cria conexão com o banco de dados - AJUSTAR PARA ALGUMA FORMA MELHOR
     const connection = await this.connectionManagement.connect();
 
     try {
@@ -39,9 +38,8 @@ class FarmRepository implements IFarmRepository {
 
       return farmSaved;
     } catch (error) {
-      console.log(error);
+      throw new ErrorTreatment(error);
     } finally {
-      //Sempre após terminar o fluxo, encerra a conexão com o banco de dados
       await this.connectionManagement.disconnect(connection);
     }
   }
@@ -53,7 +51,7 @@ class FarmRepository implements IFarmRepository {
       if (farms) return farms;
       return;
     } catch (error) {
-      console.log(error);
+      throw new ErrorTreatment(error);
     } finally {
       await this.connectionManagement.disconnect(connection);
     }
@@ -66,7 +64,7 @@ class FarmRepository implements IFarmRepository {
       const [farm] = await connection.getRepository(Farm).findBy({ id });
       if (farm) return farm;
     } catch (error) {
-      console.log(error);
+      throw new ErrorTreatment(error);
     } finally {
       await this.connectionManagement.disconnect(connection);
     }
@@ -103,22 +101,18 @@ class FarmRepository implements IFarmRepository {
     const connection = await this.connectionManagement.connect();
     try {
       const form = await connection.getRepository(Farm).find({
-        // select: ['owner'],
         where: {
           ownerId: id,
         },
         relations: {
           owner: true,
         },
-        // loadRelationIds: true,
       });
 
       return form;
     } catch (error) {
-      //ajustar tratamento de erro
-      console.log(error);
+      throw new ErrorTreatment(error);
     } finally {
-      //Sempre após terminar o fluxo, encerra a conexão com o banco de dados
       await this.connectionManagement.disconnect(connection);
     }
   }

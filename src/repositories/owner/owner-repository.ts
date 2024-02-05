@@ -17,22 +17,21 @@ class OwnerRepository implements IOwnerRepository {
     name,
     state,
   }: IOwner): Promise<Owner> {
-    //Cria conexão com o banco de dados - AJUSTAR PARA ALGUMA FORMA MELHOR
     const connection = await this.connectionManagement.connect();
 
     try {
       const owner = new Owner();
       owner.name = name;
-      owner.identity_document = identity_document;
+      owner.identity_document = identity_document.replace(/[^\d]+/g, '');
       owner.city = city;
       owner.state = state;
 
       const owners = await connection.getRepository(Owner).save(owner);
       if (owners) return owners;
+      return;
     } catch (error) {
       throw new ErrorTreatment(error);
     } finally {
-      //Sempre após terminar o fluxo, encerra a conexão com o banco de dados
       await this.connectionManagement.disconnect(connection);
     }
   }
@@ -43,8 +42,9 @@ class OwnerRepository implements IOwnerRepository {
     try {
       const owners = await connection.getRepository(Owner).find();
       if (owners) return owners;
+      return;
     } catch (error) {
-      console.log(error);
+      throw new ErrorTreatment(error);
     } finally {
       await this.connectionManagement.disconnect(connection);
     }
@@ -56,8 +56,9 @@ class OwnerRepository implements IOwnerRepository {
     try {
       const [owner] = await connection.getRepository(Owner).findBy({ id });
       if (owner) return owner;
+      return owner;
     } catch (error) {
-      console.log(error);
+      throw new ErrorTreatment(error);
     } finally {
       await this.connectionManagement.disconnect(connection);
     }
@@ -73,7 +74,7 @@ class OwnerRepository implements IOwnerRepository {
       await connection.getRepository(Owner).update({ id: id }, ownerChanges);
       return;
     } catch (error) {
-      console.log(error);
+      throw new ErrorTreatment(error);
     } finally {
       await this.connectionManagement.disconnect(connection);
     }
@@ -86,7 +87,7 @@ class OwnerRepository implements IOwnerRepository {
       await connection.getRepository(Owner).update({ id: id }, ownerChanges);
       return;
     } catch (error) {
-      console.log(error);
+      throw new ErrorTreatment(error);
     } finally {
       await this.connectionManagement.disconnect(connection);
     }
